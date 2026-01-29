@@ -6,16 +6,16 @@ from transformers import pipeline
 import torch
 
 app = FastAPI()
-# Para que funcione con el LiveServer
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Permite todas las conexiones
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 # Cargamos el modelo
-pipe = pipeline("text-generation", model="gpt2")
+pipe = pipeline("text-generation", model="Qwen/Qwen2.5-1.5B-Instruct", device_map="auto")
 
 # Para que pueda leer el CSS y JS
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -43,3 +43,5 @@ async def continuar_aventura(datos: AventuraRespuesta):
     print(f"Respuesta enviada: {respuesta_ia}")
 
     return {"response": respuesta_ia}
+
+# uvicorn main:app --reload
